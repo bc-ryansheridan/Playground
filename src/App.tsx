@@ -7,6 +7,8 @@ import SubBrandNavigation from './components/SubBrandNavigation/SubBrandNavigati
 import SubBrandNavigation7 from './components/SubBrandNavigation7/SubBrandNavigation7'
 import SubBrandNavigation8A from './components/SubBrandNavigation8A/SubBrandNavigation8A'
 import SubBrandNavigation8B from './components/SubBrandNavigation8B/SubBrandNavigation8B'
+import SubBrandNavigation9 from './components/SubBrandNavigation9/SubBrandNavigation9'
+import SubBrandNavigation10 from './components/SubBrandNavigation10/SubBrandNavigation10'
 
 function App() {
   return (
@@ -23,6 +25,10 @@ function App() {
       <Route path="prototypes/consolidated-navigation-8a/*" element={<Navigate to="/prototypes/consolidated-navigation-8a" replace />} />
       <Route path="prototypes/consolidated-navigation-8b" element={<SubBrandNavigation8B />} />
       <Route path="prototypes/consolidated-navigation-8b/*" element={<Navigate to="/prototypes/consolidated-navigation-8b" replace />} />
+      <Route path="prototypes/consolidated-navigation-9" element={<SubBrandNavigation9 />} />
+      <Route path="prototypes/consolidated-navigation-9/*" element={<Navigate to="/prototypes/consolidated-navigation-9" replace />} />
+      <Route path="prototypes/consolidated-navigation-10" element={<SubBrandNavigation10 />} />
+      <Route path="prototypes/consolidated-navigation-10/*" element={<Navigate to="/prototypes/consolidated-navigation-10" replace />} />
       <Route
         path="prototypes/consolidated-navigation-1"
         element={<ConsolidatedNavigation version={1} />}

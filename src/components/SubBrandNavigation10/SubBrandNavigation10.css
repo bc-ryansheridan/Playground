@@ -1,0 +1,13 @@
+/* explorer */
+.sbn10 {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+}
+
+.sbn10-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
