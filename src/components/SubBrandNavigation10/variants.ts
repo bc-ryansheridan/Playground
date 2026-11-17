@@ -9,7 +9,7 @@ export interface Config {
   start?: string
 }
 
-// Variant 10: V9 with changes (see styles at the end of sub-brand-navigation.html): the sub-bar is just the brand's logo mark, left aligned, with its nav following it; on brand pages the Solutions dropdown lists brands and By role only. Full-width nav, iris Commerce logo
+// Variant 10: V9 with changes (see styles at the end of sub-brand-navigation.html): the sub-bar is just the brand's logo mark, left aligned, with its nav following it. Full-width nav, iris Commerce logo
 const DEFAULT_CFG = "var CFG = {sv:'black',bt:1,sl:true,nl:'full',feats:true,start:''};"
 
 export function buildDoc(cfg: Config) {

@@ -795,10 +795,6 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .mod .gm-colx:first-child{padding:0 16px 0 0}
 @media(max-width:640px){.gm-pairs,.mod .gm-pairs{grid-template-columns:minmax(0,1fr)}.gm-colx,.mod .gm-colx,.gm-colx:first-child,.mod .gm-colx:first-child{padding:0 0 16px;border-right:0}}
 /* ===== Variant 10: V9 with one change: on brand pages the Solutions dropdown shows the brands (current one outlined) and By role only, no product lists, so no link appears in two menus. Commerce logo is iris. ===== */
-.menu .product__head.is-current{background:#fff;box-shadow:inset 0 0 0 1.5px var(--text)}
-body[data-sv] .menu--lg:has(.product__head.is-current) .menu__cols{grid-template-columns:auto auto;column-gap:56px}
-body[data-sv] .menu--lg:has(.product__head.is-current) .menu__cols>section{grid-column:auto}
-body[data-sv] .menu--lg:has(.product__head.is-current) .product-row{grid-template-columns:repeat(2,minmax(0,272px));column-gap:16px}
 .sub-bar__label svg{display:block;height:24px;width:auto}
 /* the brand mark sits at the left edge and its nav follows it directly (no Solutions breadcrumb, no alignment to the Commerce bar's nav) */
 @media(min-width:1140px){.sub-bar__id{width:auto;margin-right:0}}
@@ -1266,18 +1262,16 @@ function linkHTML(it){
 function textBtnHTML(it){ return '<li><a class="btn btn--text btn--sm" href="'+href(it.p)+'"><span>'+esc(it.l)+'</span>'+ARR+'</a></li>'; }
 function listHTML(items,cls){ return '<ul class="list'+(cls?' '+cls:'')+'">'+items.map(function(it){ return it.cta ? textBtnHTML(it) : linkHTML(it); }).join('')+'</ul>'; }
 function groupHTML(g,d){ return '<div class="group'+(d==null?'':' reveal')+'"'+(d==null?'':' style="--d:'+d+'"')+'><p class="group__title">'+esc(g.title)+'</p>'+(g.desc?'<p class="group__desc">'+esc(g.desc)+'</p>':'')+listHTML(g.items,g.n===2?'list--2':'')+'</div>'; }
-function productHTML(g,lite){
-  var k = g.head.k, here = lite && k===brandOf(curPath);
-  return '<div class="product"><a class="product__head'+(here?' is-current':'')+'" href="'+href(g.head.p)+'">'+brandTile(k)+'<span class="product__text"><span class="product__name">'+esc(g.head.l)+'</span><span class="product__tag">'+esc(BRAND[k].tag)+'</span></span><span class="product__go" aria-hidden="true">'+ARR+'</span></a>'+(lite?'':'<ul class="tree">'+g.items.map(linkHTML).join('')+'</ul>')+'</div>';
+function productHTML(g){
+  var k = g.head.k;
+  return '<div class="product"><a class="product__head" href="'+href(g.head.p)+'">'+brandTile(k)+'<span class="product__text"><span class="product__name">'+esc(g.head.l)+'</span><span class="product__tag">'+esc(BRAND[k].tag)+'</span></span><span class="product__go" aria-hidden="true">'+ARR+'</span></a><ul class="tree">'+g.items.map(linkHTML).join('')+'</ul></div>';
 }
 function promoHTML(c,d){
   return '<div class="promo reveal" style="--d:'+d+'"><span class="promo__eyebrow">'+esc(c.kicker)+'</span><p class="promo__text">'+esc(c.headline)+'</p>'+c.links.map(function(k){ return '<a class="btn btn--text btn--sm" href="'+href(k.p)+'" data-in-card><span>'+esc(k.l)+'</span>'+ARR+'</a>'; }).join('')+'</div>';
 }
 function solutionsInner(m){
   var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer;
-  /* on a brand page the product lists are left out: they already live in that brand's own Product menu, so each link has one home */
-  var lite = brandOf(curPath)!=='cm';
-  return '<div class="menu__main"><div class="menu__cols" style="--gap:'+m.gap+'px"><section class="reveal" style="--d:0"><div class="product-row">'+prods.map(function(g){ return productHTML(g,lite); }).join('')+'</div></section><section class="reveal" style="--d:1"><div class="group-row group-row--solo" style="--gap:64px">'+caps.map(function(g){ return groupHTML(g); }).join('')+'</div></section></div></div>'
+  return '<div class="menu__main"><div class="menu__cols" style="--gap:'+m.gap+'px"><section class="reveal" style="--d:0"><div class="product-row">'+prods.map(productHTML).join('')+'</div></section><section class="reveal" style="--d:1"><div class="group-row group-row--solo" style="--gap:64px">'+caps.map(function(g){ return groupHTML(g); }).join('')+'</div></section></div></div>'
    + '<a class="strip reveal" style="--d:2" href="'+href(f.p)+'"><span>'+esc(f.text)+'</span><span class="gm-go"><span>✦ '+esc(f.l)+'</span>'+ARR+'</span></a>';
 }
 var groupsOf = function(m){ return m.cols.filter(function(c){ return !c.card; }); };
