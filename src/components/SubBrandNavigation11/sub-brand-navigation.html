@@ -838,7 +838,7 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 @media(max-width:1139px){.brsw3{display:none}}
 /* secondary navigation: breadcrumbs */
 .trail{background:#fff;border-bottom:1px solid var(--border);color:#000}
-.trail-in{display:flex;flex-wrap:wrap;align-items:center;padding:12px 0;list-style:none;margin:0 auto;font-size:14px;line-height:20px}
+.trail-in{display:flex;flex-wrap:wrap;align-items:center;padding:6px 0;list-style:none;margin:0 auto;font-size:14px;line-height:20px}
 .trail-in li{display:flex;align-items:center;min-width:0}
 .trail a{color:var(--t2)}
 .trail a:hover,.trail a:focus-visible{color:#000;text-decoration:underline;text-underline-offset:3px}
@@ -884,6 +884,15 @@ body[data-sv] .menu .product__head{background:#fff;box-shadow:inset 0 0 0 1px va
 body[data-sv] .menu .product__head:hover,body[data-sv] .menu .product__head:focus-visible{background:var(--surface-2);box-shadow:inset 0 0 0 1px #667085}
 .menu .product__head:hover .product__name,.menu .product__head:focus-visible .product__name{text-decoration:underline;text-underline-offset:3px}
 .menu .product__head:hover .product__go,.menu .product__head:focus-visible .product__go{opacity:1;transform:translateX(4px)}
+/* Solutions brand headings: a bordered card that links to the brand, like version 9 */
+.gm-pairs .gm-head--card{padding:14px 16px;margin:0 0 12px;border-radius:12px;background:#fff;color:#000;box-shadow:inset 0 0 0 1px var(--border);transition:box-shadow .25s var(--ease),background-color .25s var(--ease)}
+.gm-head--card .gm-brand{width:100%}
+.sol-cols .gm-head:not(.gm-head--card){padding:14px 16px 26px}
+.gm-cardgo{margin-left:auto;display:grid;place-items:center;transition:transform .5s var(--ease-out)}
+.gm-cardgo svg{width:14px;height:13px}
+.gm-head--card:hover,.gm-head--card:focus-visible{background:var(--surface-2);box-shadow:inset 0 0 0 1px #667085}
+.gm-head--card:hover .gm-brand>span:nth-child(2),.gm-head--card:focus-visible .gm-brand>span:nth-child(2){text-decoration:underline;text-underline-offset:3px}
+.gm-head--card:hover .gm-cardgo,.gm-head--card:focus-visible .gm-cardgo{transform:translateX(4px)}
 </style>
 </head>
 <body>
@@ -945,6 +954,8 @@ reg('/get-started','Get started','cm');
 /* Community is one hub shared by both brands; each brand's menu deep-links into its own section of it */
 var COMMUNITY = {bc:{l:'Community Hub',p:'/community?brand=bc'},fdx:{l:'Community Hub',p:'/community?brand=fdx'}};
 reg('/community','Community','cm');
+/* the Commerce library's types, offered again in each brand's Resources menu */
+var BT = gl('learning',['All Resources','Articles','Blog','Guides','Podcasts','Reports','Webinars','Events']);
 var MENU = {
  'brandsw':{brand:'cm',label:'Switch brand',gap:0,cols:[]},
  'solutions':{brand:'cm',label:'Solutions',gap:72,cols:[
@@ -968,6 +979,7 @@ var MENU = {
  'bc-resources':{brand:'bc',label:'Resources',gap:28,cols:[
   {title:'Product Info',items:LB('bc',['Basics of BigCommerce','Product Releases','Help Center','BigCommerce University'])},
   {title:'Community',items:[COMMUNITY.bc].concat(LB('bc',['Case Studies','Customer Showcase','Community Q&A']))},
+  {title:'Browse by Type',items:BT},
   {title:'Build',inCard:true,items:LB('bc',['Developer Docs','API Reference',{l:'MCP Toolkit',ai:true},'Apps Marketplace','Partner Directory'])}]},
  'fdx-products':{brand:'fdx',label:'Product Features',gap:28,cols:[
   {title:'Overview',items:LB('fdx',['Product Overview','How It Works'])},
@@ -980,6 +992,7 @@ var MENU = {
  'fdx-resources':{brand:'fdx',label:'Resources',gap:48,cols:[
   {title:'Learn',items:LB('fdx',['Feed Management Guides','Case Studies','Webinars'])},
   {title:'Get Help',items:LB('fdx',['FeedSupport™','Help Center']).concat([COMMUNITY.fdx],LB('fdx',['Contact']))},
+  {title:'Browse by Type',items:BT},
   {title:'Build',items:LB('fdx',['Developer Docs','API Reference','Supported Integrations'])}]}
 };
 /* Floating panel only: dropdowns with a lot of empty width get a few feature cards (icon, title, one line), not one per link */
@@ -1520,10 +1533,10 @@ var COMMERCE_LOGO = '<a class="logo" href="#/" aria-label="Commerce home"><img s
 function soloBarHTML(brand){
   var b = BRAND[brand];
   return '<div class="sub-bar sub-bar--solo"><nav class="bar bar--sub bar--solo" aria-label="'+esc(b.name)+'">'
-    +'<div class="sub-bar__id">'+COMMERCE_LOGO+'<button class="nav-item brsw3" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="menu-brandsw" data-menu="brandsw"><span>Solutions</span>'+CHEV+'</button></div>'
+    +'<div class="sub-bar__id">'+COMMERCE_LOGO+'</div>'
     +'<span class="sub-bar__div" aria-hidden="true"></span>'
     +'<a class="sub-bar__label sub-bar__label--logo" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview" title="'+esc(b.name)+'">'+b.mark+'</a>'
-    +'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+moreSlot('sub')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div>'+mToggle('sub')+menuHTML('brandsw')+'</nav></div>';
+    +'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+moreSlot('sub')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div>'+mToggle('sub')+'</nav></div>';
 }
 function headerHTML(brand){
   if(brand!=='cm') return '<div class="stack stack--solo">'+soloBarHTML(brand)+'</div>'+mobilePanelsHTML(brand)+startedModalHTML();
