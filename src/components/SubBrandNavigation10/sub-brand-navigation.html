@@ -1294,7 +1294,7 @@ function solLink(it,k){
 }
 function solutionsInner(m){
   var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer, d = 1;
-  var head = function(name,tag,k){ return '<div class="gm-head reveal"><div class="gm-brand">'+(k?'<span class="bi bi--glyph">'+glyph(k)+'</span>':'')+'<span>'+esc(name)+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</div>'; };
+  var head = function(name,tag,k){ return '<div class="gm-head reveal"><div class="gm-brand">'+(k?'<span class="gm-mk">'+BRAND[k].mark+'</span>':'')+'<span>'+esc(name)+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</div>'; };
   var cols = prods.map(function(g){
     var k = g.head.k;
     return '<div class="gm-colx">'+head(g.head.l,BRAND[k].tag,k)+[{l:'Explore '+g.head.l,p:g.head.p,ov:true}].concat(g.items).map(function(it){ return solLink(it,d++); }).join('')+'</div>';
