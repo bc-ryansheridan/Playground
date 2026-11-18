@@ -813,6 +813,13 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .brsw2__a .ck{margin-left:auto}
 .brsw2__m svg{display:block;height:24px;width:auto}
 @media(max-width:1139px){.brsw2__btn{display:none}}
+/* Solutions brand cards read as links: outlined instead of a flat gray fill, a clear black arrow, and on hover a darker outline, a tint, an underlined name and the arrow sliding right */
+body[data-sv] .menu .product__head{background:#fff;box-shadow:inset 0 0 0 1px var(--border);transition:box-shadow .25s var(--ease),background-color .25s var(--ease)}
+.menu .product__go{opacity:1;color:#000}
+.menu .product__go svg{width:14px;height:13px}
+body[data-sv] .menu .product__head:hover,body[data-sv] .menu .product__head:focus-visible{background:var(--surface-2);box-shadow:inset 0 0 0 1px #667085}
+.menu .product__head:hover .product__name,.menu .product__head:focus-visible .product__name{text-decoration:underline;text-underline-offset:3px}
+.menu .product__head:hover .product__go,.menu .product__head:focus-visible .product__go{opacity:1;transform:translateX(4px)}
 </style>
 </head>
 <body>
