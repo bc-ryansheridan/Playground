@@ -833,6 +833,14 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .sub-bar__crumb svg{width:5px;height:7px}
 @media(max-width:1139px){.stack--solo .logo img{height:20px}}
 @media(max-width:640px){.stack--solo .sub-bar__crumb{padding:0 8px}}
+/* Solutions: the brand heading is a gray card with an arrow, like version 9 */
+.sol-cols .gm-head--card{display:block;padding:14px 16px;margin:0 0 12px;border-radius:var(--r-lg);background:var(--surface-2);color:#000;cursor:pointer;transition:background-color .25s var(--ease)}
+.sol-cols .gm-head--card .gm-brand{display:grid;grid-template-columns:20px 1fr 14px;column-gap:10px;align-items:center}
+.sol-cols .gm-head--card .gm-tag{margin-top:4px}
+.sol-cols .gm-head--card .gm-cardgo{display:grid;place-items:center;opacity:.55;transition:opacity .3s var(--ease),transform .5s var(--ease-out)}
+.sol-cols .gm-head--card .gm-cardgo svg{width:12px;height:11px}
+.sol-cols .gm-head--card:hover,.sol-cols .gm-head--card:focus-visible{background:#e8ecf2}
+.sol-cols .gm-head--card:hover .gm-cardgo,.sol-cols .gm-head--card:focus-visible .gm-cardgo{opacity:1;transform:translateX(3px)}
 /* Resources menus: a link out to the Commerce-wide library */
 .menu__more{margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
 /* Part of Commerce: the other brand, offered above the footer */
@@ -1338,10 +1346,14 @@ function solLink(it){
 }
 function solutionsInner(m){
   var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer, d = 0;
-  var head = function(name,tag,k){ return '<div class="gm-head"><div class="gm-brand">'+(k?'<span class="gm-mk">'+BRAND[k].mark+'</span>':'')+'<span>'+esc(name)+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</div>'; };
+  /* a brand's heading is a card that links to the brand (like version 9), and its column still opens with an Explore link */
+  var head = function(name,tag,k,p){
+    if(k) return '<a class="gm-head gm-head--card" href="'+href(p)+'"><div class="gm-brand"><span class="gm-mk">'+BRAND[k].mark+'</span><span>'+esc(name)+'</span><span class="gm-cardgo" aria-hidden="true">'+ARR+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</a>';
+    return '<div class="gm-head"><div class="gm-brand"><span>'+esc(name)+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</div>';
+  };
   var cols = prods.map(function(g){
     var k = g.head.k;
-    return '<div class="gm-colx reveal" style="--d:'+(d++)+'">'+head(g.head.l,BRAND[k].tag,k)+[{l:'Explore '+g.head.l,p:g.head.p,ov:true}].concat(g.items).map(solLink).join('')+'</div>';
+    return '<div class="gm-colx reveal" style="--d:'+(d++)+'">'+head(g.head.l,BRAND[k].tag,k,g.head.p)+[{l:'Explore '+g.head.l,p:g.head.p,ov:true}].concat(g.items).map(solLink).join('')+'</div>';
   }).concat(caps.map(function(g){
     return '<div class="gm-colx reveal" style="--d:'+(d++)+'">'+head(g.title,g.desc,null)+g.items.map(solLink).join('')+'</div>';
   })).join('');
