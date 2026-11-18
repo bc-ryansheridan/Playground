@@ -823,24 +823,28 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .brsw2__m svg{display:block;height:24px;width:auto}
 @media(max-width:1139px){.brsw2__btn{display:none}}
 /* ===== Variant 11: one bar on brand pages ===== */
-.stack--solo .bar--solo{height:var(--bar-h);padding-top:0;padding-bottom:0;gap:14px}
+/* the Commerce logo is the full logo everywhere, the same size in the same place on Commerce and brand pages */
+.stack .logo{flex:none}
+.stack .logo img{height:24px;width:auto;display:block}
+.stack--solo .bar--solo{height:var(--bar-h);padding-top:0;padding-bottom:0;gap:10px}
 .stack--solo .sub-bar{border-top:0}
-.stack--solo .sub-bar__id{align-items:center;gap:0;width:auto;margin-right:0}
-.stack--solo .logo{display:inline-flex;align-items:center;flex:none}
-.stack--solo .logo img{height:21px;width:auto;display:block}
-/* the breadcrumb chevron between the Commerce logo and the brand */
-.sub-bar__crumb{display:grid;place-items:center;flex:none;padding:0 8px;color:var(--text-tertiary)}
-.sub-bar__crumb svg{width:5px;height:7px}
-@media(max-width:1139px){.stack--solo .logo img{height:20px}}
-@media(max-width:640px){.stack--solo .sub-bar__crumb{padding:0 8px}}
-/* Solutions: the brand heading is a gray card with an arrow, like version 9 */
-.sol-cols .gm-head--card{display:block;padding:14px 16px;margin:0 0 12px;border-radius:var(--r-lg);background:var(--surface-2);color:#000;cursor:pointer;transition:background-color .25s var(--ease)}
-.sol-cols .gm-head--card .gm-brand{display:grid;grid-template-columns:20px 1fr 14px;column-gap:10px;align-items:center}
-.sol-cols .gm-head--card .gm-tag{margin-top:4px}
-.sol-cols .gm-head--card .gm-cardgo{display:grid;place-items:center;opacity:.55;transition:opacity .3s var(--ease),transform .5s var(--ease-out)}
-.sol-cols .gm-head--card .gm-cardgo svg{width:12px;height:11px}
-.sol-cols .gm-head--card:hover,.sol-cols .gm-head--card:focus-visible{background:#e8ecf2}
-.sol-cols .gm-head--card:hover .gm-cardgo,.sol-cols .gm-head--card:focus-visible .gm-cardgo{opacity:1;transform:translateX(3px)}
+.stack--solo .sub-bar__id{align-items:center;gap:8px;width:auto;margin-right:0}
+/* brand switcher: plain text with a chevron */
+.brsw3{padding:8px 10px;gap:6px}
+.brsw3[aria-expanded="true"] svg{transform:rotate(180deg)}
+/* the brand is shown as just its logo mark, which is its home link */
+.sub-bar__label--logo{margin-right:6px}
+.sub-bar__label--logo svg{display:block;height:24px;width:auto}
+@media(max-width:1139px){.brsw3{display:none}}
+/* secondary navigation: breadcrumbs */
+.trail{background:#fff;border-bottom:1px solid var(--border);color:#000}
+.trail-in{display:flex;flex-wrap:wrap;align-items:center;padding:12px 0;list-style:none;margin:0 auto;font-size:14px;line-height:20px}
+.trail-in li{display:flex;align-items:center;min-width:0}
+.trail a{color:var(--t2)}
+.trail a:hover,.trail a:focus-visible{color:#000;text-decoration:underline;text-underline-offset:3px}
+.trail [aria-current]{color:#000}
+.trail-sep{display:grid;place-items:center;padding:0 10px;color:var(--t3)}
+.trail-sep svg{width:5px;height:7px}
 /* Resources menus: a link out to the Commerce-wide library */
 .menu__more{margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
 /* Part of Commerce: the other brand, offered above the footer */
@@ -1376,7 +1380,7 @@ function brandSwitchInner(){
   var cur = brandOf(curPath);
   return '<div class="menu__main brsw2">'+Object.keys(BRAND).filter(function(k){ return k!=='cm'; }).map(function(k){
     var b = BRAND[k], here = k===cur;
-    return '<a class="brsw2__a'+(here?' is-current':'')+'" href="'+href(b.home)+'"'+(here?' aria-current="true"':'')+'><span class="brsw2__m">'+b.mark+'</span><span>'+esc(b.name)+'</span>'+(here?CHECK:'')+'</a>';
+    return '<a class="brsw2__a'+(here?' is-current':'')+'" href="'+href(b.home)+'"'+(here?' aria-current="true"':'')+'><span>'+esc(b.name)+'</span>'+(here?CHECK:'')+'</a>';
   }).join('')+'</div>';
 }
 function menuHTML(id){
@@ -1512,17 +1516,19 @@ function startedBody(t){
 function startedModalHTML(){ return modalHTML('started','How would you like to get started?',startedBody(),true); }
 function startedMenuHTML(){ return '<div class="menu menu--end menu--cta" id="menu-started" role="region" aria-label="Get started">'+startedBody(true)+'</div>'; }
 /* Brand pages (like Adobe's product pages) have one bar and none of the Commerce links: the Commerce logo takes you home, a breadcrumb chevron leads into the brand (just its logo mark), a divider, then the brand's own nav and buttons */
+var COMMERCE_LOGO = '<a class="logo" href="#/" aria-label="Commerce home"><img src="'+WORDMARK+'" alt="Commerce" width="163" height="24"></a>';
 function soloBarHTML(brand){
   var b = BRAND[brand];
-  var logo = '<a class="logo" href="#/" aria-label="Commerce home"><img src="'+WORDMARK+'" alt="Commerce" width="163" height="24"></a>';
   return '<div class="sub-bar sub-bar--solo"><nav class="bar bar--sub bar--solo" aria-label="'+esc(b.name)+'">'
-    +'<div class="sub-bar__id">'+logo+'<span class="sub-bar__crumb" aria-hidden="true">'+SVG.chevR+'</span><a class="sub-bar__label" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview" title="'+esc(b.name)+'">'+b.mark+'</a></div>'
-    +'<span class="sub-bar__div" aria-hidden="true"></span><ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+moreSlot('sub')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div>'+mToggle('sub')+'</nav></div>';
+    +'<div class="sub-bar__id">'+COMMERCE_LOGO+'<button class="nav-item brsw3" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="menu-brandsw" data-menu="brandsw"><span>Solutions</span>'+CHEV+'</button></div>'
+    +'<span class="sub-bar__div" aria-hidden="true"></span>'
+    +'<a class="sub-bar__label sub-bar__label--logo" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview" title="'+esc(b.name)+'">'+b.mark+'</a>'
+    +'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+moreSlot('sub')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div>'+mToggle('sub')+menuHTML('brandsw')+'</nav></div>';
 }
 function headerHTML(brand){
   if(brand!=='cm') return '<div class="stack stack--solo">'+soloBarHTML(brand)+'</div>'+mobilePanelsHTML(brand)+startedModalHTML();
   /* Commerce owns the global header on its own pages */
-  var logo = '<a class="logo" href="#/" aria-label="Commerce home"><img src="'+WORDMARK+'" alt="Commerce" width="163" height="24"></a>';
+  var logo = COMMERCE_LOGO;
   var nav = '<ul class="nav">'+NAV.cm.map(function(n){ return navItemHTML(n,false); }).join('')+moreSlot('cm')+'</ul>';
   return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="commerce-bar"><nav class="bar" aria-label="Commerce">'+logo+'<div class="bar__right">'+nav+hdrRightHTML(brand)+'</div>'+mToggle('global')+menuHTML('solutions')+menuHTML('industries')+menuHTML('learning')+menuHTML('company')+moreMenuShell('cm')+startedMenuHTML()+'</nav></header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+mobilePanelsHTML(brand)+startedModalHTML();
 }
@@ -1552,10 +1558,20 @@ function heroHome(brand){
   return '<div class="light">'+ann+'<section class="hero h-center"><div class="wrap">'+(h.eyebrow?'<span class="eyebrow">'+esc(h.eyebrow)+'</span>':'')+'<h1>'+esc(h.h1)+'</h1><p class="desc">'+esc(h.desc)+'</p>'+btns+VIS+'</div></section></div>';
 }
 var VIS = '<div class="visual" role="img" aria-label="Hero visual placeholder"></div>';
-function crumbsHTML(brand,page){
-  var mid = page.parent ? '<a href="'+href(page.parent.path)+'">'+esc(page.parent.label)+'</a>'+SVG.chevR : '';
-  var start = brand==='cm' ? '<a href="#/">Home</a>' : '<a href="#/">Commerce</a>'+SVG.chevR+'<a href="'+href(BRAND[brand].home)+'">'+BRAND[brand].name+'</a>';
-  return '<nav class="crumbs" aria-label="Breadcrumb"><div class="crumbs-in">'+start+SVG.chevR+mid+'<span class="cur">'+esc(page.label)+'</span></div></nav>';
+/* breadcrumbs now live in the secondary bar under the navigation (see trailHTML), not in the page */
+function crumbsHTML(){ return ''; }
+/* secondary navigation: Home, the brand, the section, the page. The last item is the current page */
+function trailHTML(brand,page,path){
+  var items = [{l:'Home',p:'/'}];
+  if(brand!=='cm') items.push({l:BRAND[brand].name,p:BRAND[brand].home});
+  if(!(brand!=='cm' && path===BRAND[brand].home)){
+    if(page.parent) items.push({l:page.parent.label,p:page.parent.path});
+    items.push({l:page.label});
+  }
+  return '<nav class="trail" aria-label="Breadcrumb"><ol class="trail-in wrap">'+items.map(function(it,k){
+    var last = k===items.length-1;
+    return '<li>'+(k?'<span class="trail-sep" aria-hidden="true">'+SVG.chevR+'</span>':'')+(last?'<span aria-current="page">'+esc(it.l)+'</span>':'<a href="'+href(it.p)+'">'+esc(it.l)+'</a>')+'</li>';
+  }).join('')+'</ol></nav>';
 }
 /* the eyebrow only appears on pages without breadcrumbs; everywhere else the breadcrumbs give context */
 function heroHTML(brand,label,type,crumbs,top){
@@ -1637,9 +1653,9 @@ function fitMenu(panel){
     var trigger = document.querySelector('[data-menu="'+panel.id.replace('menu-','')+'"]'), bar = panel.offsetParent;
     if(trigger && bar) panel.style.setProperty('--left',Math.round(trigger.getBoundingClientRect().left - bar.getBoundingClientRect().left - 10)+'px');
   }
-  /* the brand switcher lines its marks up under the sub bar's own mark, so the names line up too */
+  /* the brand switcher lines its rows' text up under the switcher's own text */
   if(panel.id==='menu-brandsw'){
-    var lab = document.querySelector('.sub-bar__label svg'), bar2 = panel.offsetParent, row = panel.querySelector('.brsw2__a');
+    var lab = document.querySelector('.brsw3 > span'), bar2 = panel.offsetParent, row = panel.querySelector('.brsw2__a');
     if(lab && bar2 && row){
       var pcs = getComputedStyle(panel), rcs = getComputedStyle(row), mcs = getComputedStyle(panel.querySelector('.brsw2'));
       var inset = parseFloat(pcs.borderLeftWidth) + parseFloat(pcs.paddingLeft) + parseFloat(mcs.paddingLeft) + parseFloat(rcs.paddingLeft);
@@ -1807,7 +1823,8 @@ function route(path,keep){
   else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'}, brand!=='cm' && path===BRAND[brand].home)+'</main>';
   if(!(page && page.hub)) html = html.replace(/<\/main>$/, MORE+'</main>');
   document.body.dataset.sv = CFG.sv; document.body.dataset.nl = CFG.nl||'full'; document.body.dataset.bt = CFG.bt;
-  app.innerHTML = headerHTML(brand)+html+crossHTML(brand)+footerHTML();
+  var trail = path==='/' ? '' : trailHTML(brand, page || {label:'Page not found'}, path);
+  app.innerHTML = headerHTML(brand)+trail+html+crossHTML(brand)+footerHTML();
   /* external links (the product log in pages) open in a new tab */
   [].forEach.call(app.querySelectorAll('a[href^="http"]'),function(a){ a.target = '_blank'; a.rel = 'noopener noreferrer'; });
   /* the page behind the navigation matches the first section: black when it is dark, white when it is light */
