@@ -801,7 +801,6 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .sol-cols .gm-colx:last-child{padding-right:0;border-right:0}
 .sol-cols .gm-head{min-height:0}
 .sol-cols .gm-link{display:flex;align-items:center;gap:8px;font-weight:var(--w-regular)}
-.sol-cols .gm-link--ov{font-weight:var(--w-medium)}
 .sol-cols .gm-lt{font-weight:inherit}
 .menu--lg .menu__main{padding:24px 8px 16px}
 /* ===== Variant 10: V9 with one change: the Solutions dropdown is laid out like Get started (a column per brand, plus By role), each brand column opening with an Explore link. Commerce logo is iris. ===== */
@@ -1289,17 +1288,17 @@ function promoHTML(c,d){
 }
 /* Solutions: one column per brand, built like the Get started panel (brand, tagline, then plain links), with an Explore [brand] link first. By role is a column of the same kind.
    Columns come from the menu data, so a new brand or group adds a column. */
-function solLink(it,k){
-  return '<a class="gm-link reveal'+(it.ov?' gm-link--ov':'')+'" style="--d:'+k+'" href="'+href(it.p)+'"><span class="gm-lt">'+esc(it.l)+(it.ai?' \u2726':'')+'</span>'+(it.tag?'<span class="tag">'+esc(it.tag)+'</span>':'')+'</a>';
+function solLink(it){
+  return '<a class="gm-link'+(it.ov?' gm-link--ov':'')+'" href="'+href(it.p)+'"><span class="gm-lt">'+esc(it.l)+(it.ai?' \u2726':'')+'</span>'+(it.tag?'<span class="tag">'+esc(it.tag)+'</span>':'')+'</a>';
 }
 function solutionsInner(m){
-  var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer, d = 1;
-  var head = function(name,tag,k){ return '<div class="gm-head reveal"><div class="gm-brand">'+(k?'<span class="gm-mk">'+BRAND[k].mark+'</span>':'')+'<span>'+esc(name)+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</div>'; };
+  var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer, d = 0;
+  var head = function(name,tag,k){ return '<div class="gm-head"><div class="gm-brand">'+(k?'<span class="gm-mk">'+BRAND[k].mark+'</span>':'')+'<span>'+esc(name)+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</div>'; };
   var cols = prods.map(function(g){
     var k = g.head.k;
-    return '<div class="gm-colx">'+head(g.head.l,BRAND[k].tag,k)+[{l:'Explore '+g.head.l,p:g.head.p,ov:true}].concat(g.items).map(function(it){ return solLink(it,d++); }).join('')+'</div>';
+    return '<div class="gm-colx reveal" style="--d:'+(d++)+'">'+head(g.head.l,BRAND[k].tag,k)+[{l:'Explore '+g.head.l,p:g.head.p,ov:true}].concat(g.items).map(solLink).join('')+'</div>';
   }).concat(caps.map(function(g){
-    return '<div class="gm-colx">'+head(g.title,g.desc,null)+g.items.map(function(it){ return solLink(it,d++); }).join('')+'</div>';
+    return '<div class="gm-colx reveal" style="--d:'+(d++)+'">'+head(g.title,g.desc,null)+g.items.map(solLink).join('')+'</div>';
   })).join('');
   return '<div class="menu__main"><div class="gm-pairs sol-cols">'+cols+'</div></div>'
    + '<a class="strip reveal" style="--d:'+d+'" href="'+href(f.p)+'"><span>'+esc(f.text)+'</span><span class="gm-go"><span>\u2726 '+esc(f.l)+'</span>'+ARR+'</span></a>';
