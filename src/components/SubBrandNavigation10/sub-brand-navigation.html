@@ -794,7 +794,17 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .mod .gm-colx{padding:0 0 0 16px}
 .mod .gm-colx:first-child{padding:0 16px 0 0}
 @media(max-width:640px){.gm-pairs,.mod .gm-pairs{grid-template-columns:minmax(0,1fr)}.gm-colx,.mod .gm-colx,.gm-colx:first-child,.mod .gm-colx:first-child{padding:0 0 16px;border-right:0}}
-/* ===== Variant 10: V9 with one change: on brand pages the Solutions dropdown shows the brands (current one outlined) and By role only, no product lists, so no link appears in two menus. Commerce logo is iris. ===== */
+/* Solutions columns: same look as the Get started panel; the columns divide with a hairline and the panel grows with the number of columns */
+.sol-cols{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(210px,292px);padding:0 4px}
+.sol-cols .gm-colx,.sol-cols .gm-colx:first-child{padding:0 20px;border-right:1px solid rgba(0,0,0,.07)}
+.sol-cols .gm-colx:first-child{padding-left:0}
+.sol-cols .gm-colx:last-child{padding-right:0;border-right:0}
+.sol-cols .gm-head{min-height:0}
+.sol-cols .gm-link{display:flex;align-items:center;gap:8px;font-weight:var(--w-regular)}
+.sol-cols .gm-link--ov{font-weight:var(--w-medium)}
+.sol-cols .gm-lt{font-weight:inherit}
+.menu--lg .menu__main{padding:24px 8px 16px}
+/* ===== Variant 10: V9 with one change: the Solutions dropdown is laid out like Get started (a column per brand, plus By role), each brand column opening with an Overview link. Commerce logo is iris. ===== */
 .sub-bar__label svg{display:block;height:24px;width:auto}
 .sub-bar__id .sub-bar__label svg{transform:translateY(-1px)}
 /* the brand mark sits at the left edge and its nav follows it directly (no Solutions breadcrumb, no alignment to the Commerce bar's nav) */
@@ -1277,10 +1287,22 @@ function productHTML(g){
 function promoHTML(c,d){
   return '<div class="promo reveal" style="--d:'+d+'"><span class="promo__eyebrow">'+esc(c.kicker)+'</span><p class="promo__text">'+esc(c.headline)+'</p>'+c.links.map(function(k){ return '<a class="btn btn--text btn--sm" href="'+href(k.p)+'" data-in-card><span>'+esc(k.l)+'</span>'+ARR+'</a>'; }).join('')+'</div>';
 }
+/* Solutions: one column per brand, built like the Get started panel (brand, tagline, then plain links), with an Overview link first. By role is a column of the same kind.
+   Columns come from the menu data, so a new brand or group adds a column. */
+function solLink(it,k){
+  return '<a class="gm-link reveal'+(it.ov?' gm-link--ov':'')+'" style="--d:'+k+'" href="'+href(it.p)+'"><span class="gm-lt">'+esc(it.l)+(it.ai?' \u2726':'')+'</span>'+(it.tag?'<span class="tag">'+esc(it.tag)+'</span>':'')+'</a>';
+}
 function solutionsInner(m){
-  var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer;
-  return '<div class="menu__main"><div class="menu__cols" style="--gap:'+m.gap+'px"><section class="reveal" style="--d:0"><div class="product-row">'+prods.map(productHTML).join('')+'</div></section><section class="reveal" style="--d:1"><div class="group-row group-row--solo" style="--gap:64px">'+caps.map(function(g){ return groupHTML(g); }).join('')+'</div></section></div></div>'
-   + '<a class="strip reveal" style="--d:2" href="'+href(f.p)+'"><span>'+esc(f.text)+'</span><span class="gm-go"><span>✦ '+esc(f.l)+'</span>'+ARR+'</span></a>';
+  var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer, d = 1;
+  var head = function(name,tag,k){ return '<div class="gm-head reveal"><div class="gm-brand">'+(k?'<span class="bi bi--glyph">'+glyph(k)+'</span>':'')+'<span>'+esc(name)+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</div>'; };
+  var cols = prods.map(function(g){
+    var k = g.head.k;
+    return '<div class="gm-colx">'+head(g.head.l,BRAND[k].tag,k)+[{l:'Overview',p:g.head.p,ov:true}].concat(g.items).map(function(it){ return solLink(it,d++); }).join('')+'</div>';
+  }).concat(caps.map(function(g){
+    return '<div class="gm-colx">'+head(g.title,g.desc,null)+g.items.map(function(it){ return solLink(it,d++); }).join('')+'</div>';
+  })).join('');
+  return '<div class="menu__main"><div class="gm-pairs sol-cols">'+cols+'</div></div>'
+   + '<a class="strip reveal" style="--d:'+d+'" href="'+href(f.p)+'"><span>'+esc(f.text)+'</span><span class="gm-go"><span>\u2726 '+esc(f.l)+'</span>'+ARR+'</span></a>';
 }
 var groupsOf = function(m){ return m.cols.filter(function(c){ return !c.card; }); };
 /* menus laid out as equal columns give the cards area 2.4 columns' worth of width; menus with a promo are flex and need nothing */
