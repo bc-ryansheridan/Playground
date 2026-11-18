@@ -830,12 +830,13 @@ body[data-sv] .menu .product__head:hover,body[data-sv] .menu .product__head:focu
 .menu .product__head:hover .product__name,.menu .product__head:focus-visible .product__name{text-decoration:underline;text-underline-offset:3px}
 .menu .product__head:hover .product__go,.menu .product__head:focus-visible .product__go{opacity:1;transform:translateX(4px)}
 /* ===== Variant 12: the brand columns in Solutions are gray cards, like the Developers column in Product Features. By role stays white. ===== */
-.sol-cols{gap:8px}
+.menu--lg .menu__main{padding:8px}
+.sol-cols{gap:8px;padding:0}
 .sol-cols .gm-colx,.sol-cols .gm-colx:first-child,.sol-cols .gm-colx:last-child{border-right:0}
-.sol-cols .gm-colx--card,.sol-cols .gm-colx--card:first-child{padding:20px 12px 12px;border-radius:var(--r-xl);background:var(--surface-2)}
+.sol-cols .gm-colx--card,.sol-cols .gm-colx--card:first-child{padding:24px 12px 16px;border-radius:var(--r-xl);background:var(--surface-2)}
 .sol-cols .gm-colx--card .gm-head{padding:0 12px 12px}
 .sol-cols .gm-colx--card .gm-link:hover,.sol-cols .gm-colx--card .gm-link:focus-visible{background:#e4e7ec}
-.sol-cols .gm-colx:not(.gm-colx--card){padding:20px 12px 12px}
+.sol-cols .gm-colx:not(.gm-colx--card){padding:24px 12px 16px}
 </style>
 </head>
 <body>
@@ -1307,8 +1308,7 @@ function solutionsInner(m){
   }).concat(caps.map(function(g){
     return '<div class="gm-colx reveal" style="--d:'+(d++)+'">'+head(g.title,g.desc,null)+g.items.map(solLink).join('')+'</div>';
   })).join('');
-  return '<div class="menu__main"><div class="gm-pairs sol-cols">'+cols+'</div></div>'
-   + '<a class="strip reveal" style="--d:'+d+'" href="'+href(f.p)+'"><span>'+esc(f.text)+'</span><span class="gm-go"><span>\u2726 '+esc(f.l)+'</span>'+ARR+'</span></a>';
+  return '<div class="menu__main"><div class="gm-pairs sol-cols">'+cols+'</div></div>';
 }
 var groupsOf = function(m){ return m.cols.filter(function(c){ return !c.card; }); };
 /* menus laid out as equal columns give the cards area 2.4 columns' worth of width; menus with a promo are flex and need nothing */
