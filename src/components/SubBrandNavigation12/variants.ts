@@ -9,7 +9,7 @@ export interface Config {
   start?: string
 }
 
-// Variant 12: V10 with the Solutions dropdown from V9 (brand logo marks instead of glyphs). V10 was V9 with changes (see styles at the end of sub-brand-navigation.html): the sub-bar is just the brand's logo mark, left aligned, with its nav following it. Full-width nav, iris Commerce logo
+// Variant 12: V10 where the Solutions brand columns are gray cards (like the Developers column in Product Features). Full-width nav, iris Commerce logo
 const DEFAULT_CFG = "var CFG = {sv:'black',bt:1,sl:true,nl:'full',feats:true,start:''};"
 
 export function buildDoc(cfg: Config) {

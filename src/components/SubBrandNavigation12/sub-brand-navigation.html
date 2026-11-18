@@ -794,7 +794,16 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .mod .gm-colx{padding:0 0 0 16px}
 .mod .gm-colx:first-child{padding:0 16px 0 0}
 @media(max-width:640px){.gm-pairs,.mod .gm-pairs{grid-template-columns:minmax(0,1fr)}.gm-colx,.mod .gm-colx,.gm-colx:first-child,.mod .gm-colx:first-child{padding:0 0 16px;border-right:0}}
-/* ===== Variant 12: V10 with one change: the Solutions dropdown is exactly version 9's (brand cards, By role), with each brand's logo mark instead of the glyph. Commerce logo is iris. ===== */
+/* Solutions columns: same look as the Get started panel; the columns divide with a hairline and the panel grows with the number of columns */
+.sol-cols{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(210px,292px);padding:0 4px}
+.sol-cols .gm-colx,.sol-cols .gm-colx:first-child{padding:0 20px;border-right:1px solid rgba(0,0,0,.07)}
+.sol-cols .gm-colx:first-child{padding-left:0}
+.sol-cols .gm-colx:last-child{padding-right:0;border-right:0}
+.sol-cols .gm-head{min-height:0}
+.sol-cols .gm-link{display:flex;align-items:center;gap:8px;font-weight:var(--w-regular)}
+.sol-cols .gm-lt{font-weight:inherit}
+.menu--lg .menu__main{padding:24px 8px 16px}
+/* ===== Variant 10: V9 with one change: the Solutions dropdown is laid out like Get started (a column per brand, plus By role), each brand column opening with an Explore link. Commerce logo is iris. ===== */
 .sub-bar__label svg{display:block;height:24px;width:auto}
 .sub-bar__id .sub-bar__label svg{transform:translateY(-1px)}
 /* the brand mark sits at the left edge and its nav follows it directly (no Solutions breadcrumb, no alignment to the Commerce bar's nav) */
@@ -813,8 +822,20 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .brsw2__a .ck{margin-left:auto}
 .brsw2__m svg{display:block;height:24px;width:auto}
 @media(max-width:1139px){.brsw2__btn{display:none}}
-/* Solutions brand cards use each brand's logo mark */
-.product__head .tile--bm svg{display:block;height:20px;width:auto}
+/* Solutions brand cards read as links: outlined instead of a flat gray fill, a clear black arrow, and on hover a darker outline, a tint, an underlined name and the arrow sliding right */
+body[data-sv] .menu .product__head{background:#fff;box-shadow:inset 0 0 0 1px var(--border);transition:box-shadow .25s var(--ease),background-color .25s var(--ease)}
+.menu .product__go{opacity:1;color:#000}
+.menu .product__go svg{width:14px;height:13px}
+body[data-sv] .menu .product__head:hover,body[data-sv] .menu .product__head:focus-visible{background:var(--surface-2);box-shadow:inset 0 0 0 1px #667085}
+.menu .product__head:hover .product__name,.menu .product__head:focus-visible .product__name{text-decoration:underline;text-underline-offset:3px}
+.menu .product__head:hover .product__go,.menu .product__head:focus-visible .product__go{opacity:1;transform:translateX(4px)}
+/* ===== Variant 12: the brand columns in Solutions are gray cards, like the Developers column in Product Features. By role stays white. ===== */
+.sol-cols{gap:8px}
+.sol-cols .gm-colx,.sol-cols .gm-colx:first-child,.sol-cols .gm-colx:last-child{border-right:0}
+.sol-cols .gm-colx--card,.sol-cols .gm-colx--card:first-child{padding:20px 12px 12px;border-radius:var(--r-xl);background:var(--surface-2)}
+.sol-cols .gm-colx--card .gm-head{padding:0 12px 12px}
+.sol-cols .gm-colx--card .gm-link:hover,.sol-cols .gm-colx--card .gm-link:focus-visible{background:#e4e7ec}
+.sol-cols .gm-colx:not(.gm-colx--card){padding:20px 12px 12px}
 </style>
 </head>
 <body>
@@ -1265,18 +1286,29 @@ function linkHTML(it){
 function textBtnHTML(it){ return '<li><a class="btn btn--text btn--sm" href="'+href(it.p)+'"><span>'+esc(it.l)+'</span>'+ARR+'</a></li>'; }
 function listHTML(items,cls){ return '<ul class="list'+(cls?' '+cls:'')+'">'+items.map(function(it){ return it.cta ? textBtnHTML(it) : linkHTML(it); }).join('')+'</ul>'; }
 function groupHTML(g,d){ return '<div class="group'+(d==null?'':' reveal')+'"'+(d==null?'':' style="--d:'+d+'"')+'><p class="group__title">'+esc(g.title)+'</p>'+(g.desc?'<p class="group__desc">'+esc(g.desc)+'</p>':'')+listHTML(g.items,g.n===2?'list--2':'')+'</div>'; }
-function markTile(k){ return '<span class="tile tile--bare tile--bm">'+BRAND[k].mark+'</span>'; }
 function productHTML(g){
   var k = g.head.k;
-  return '<div class="product"><a class="product__head" href="'+href(g.head.p)+'">'+markTile(k)+'<span class="product__text"><span class="product__name">'+esc(g.head.l)+'</span><span class="product__tag">'+esc(BRAND[k].tag)+'</span></span><span class="product__go" aria-hidden="true">'+ARR+'</span></a><ul class="tree">'+g.items.map(linkHTML).join('')+'</ul></div>';
+  return '<div class="product"><a class="product__head" href="'+href(g.head.p)+'">'+brandTile(k)+'<span class="product__text"><span class="product__name">'+esc(g.head.l)+'</span><span class="product__tag">'+esc(BRAND[k].tag)+'</span></span><span class="product__go" aria-hidden="true">'+ARR+'</span></a><ul class="tree">'+g.items.map(linkHTML).join('')+'</ul></div>';
 }
 function promoHTML(c,d){
   return '<div class="promo reveal" style="--d:'+d+'"><span class="promo__eyebrow">'+esc(c.kicker)+'</span><p class="promo__text">'+esc(c.headline)+'</p>'+c.links.map(function(k){ return '<a class="btn btn--text btn--sm" href="'+href(k.p)+'" data-in-card><span>'+esc(k.l)+'</span>'+ARR+'</a>'; }).join('')+'</div>';
 }
+/* Solutions: one column per brand, built like the Get started panel (brand, tagline, then plain links), with an Explore [brand] link first. By role is a column of the same kind.
+   Columns come from the menu data, so a new brand or group adds a column. */
+function solLink(it){
+  return '<a class="gm-link'+(it.ov?' gm-link--ov':'')+'" href="'+href(it.p)+'"><span class="gm-lt">'+esc(it.l)+(it.ai?' \u2726':'')+'</span>'+(it.tag?'<span class="tag">'+esc(it.tag)+'</span>':'')+'</a>';
+}
 function solutionsInner(m){
-  var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer;
-  return '<div class="menu__main"><div class="menu__cols" style="--gap:'+m.gap+'px"><section class="reveal" style="--d:0"><div class="product-row">'+prods.map(productHTML).join('')+'</div></section><section class="reveal" style="--d:1"><div class="group-row group-row--solo" style="--gap:64px">'+caps.map(function(g){ return groupHTML(g); }).join('')+'</div></section></div></div>'
-   + '<a class="strip reveal" style="--d:2" href="'+href(f.p)+'"><span>'+esc(f.text)+'</span><span class="gm-go"><span>\u2726 '+esc(f.l)+'</span>'+ARR+'</span></a>';
+  var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer, d = 0;
+  var head = function(name,tag,k){ return '<div class="gm-head"><div class="gm-brand">'+(k?'<span class="gm-mk">'+BRAND[k].mark+'</span>':'')+'<span>'+esc(name)+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</div>'; };
+  var cols = prods.map(function(g){
+    var k = g.head.k;
+    return '<div class="gm-colx gm-colx--card reveal" style="--d:'+(d++)+'">'+head(g.head.l,BRAND[k].tag,k)+[{l:'Overview',p:g.head.p,ov:true}].concat(g.items).map(solLink).join('')+'</div>';
+  }).concat(caps.map(function(g){
+    return '<div class="gm-colx reveal" style="--d:'+(d++)+'">'+head(g.title,g.desc,null)+g.items.map(solLink).join('')+'</div>';
+  })).join('');
+  return '<div class="menu__main"><div class="gm-pairs sol-cols">'+cols+'</div></div>'
+   + '<a class="strip reveal" style="--d:'+d+'" href="'+href(f.p)+'"><span>'+esc(f.text)+'</span><span class="gm-go"><span>\u2726 '+esc(f.l)+'</span>'+ARR+'</span></a>';
 }
 var groupsOf = function(m){ return m.cols.filter(function(c){ return !c.card; }); };
 /* menus laid out as equal columns give the cards area 2.4 columns' worth of width; menus with a promo are flex and need nothing */
