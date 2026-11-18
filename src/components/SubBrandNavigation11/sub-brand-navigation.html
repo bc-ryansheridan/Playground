@@ -799,7 +799,7 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .sol-cols .gm-colx,.sol-cols .gm-colx:first-child{padding:0 20px;border-right:1px solid rgba(0,0,0,.07)}
 .sol-cols .gm-colx:first-child{padding-left:0}
 .sol-cols .gm-colx:last-child{padding-right:0;border-right:0}
-.sol-cols .gm-head{min-height:0}
+.sol-cols .gm-head{min-height:0;padding:14px 16px 22px}
 .sol-cols .gm-link{display:flex;align-items:center;gap:8px;font-weight:var(--w-regular)}
 .sol-cols .gm-lt{font-weight:inherit}
 .menu--lg .menu__main{padding:24px 8px 16px}
@@ -838,7 +838,7 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 @media(max-width:1139px){.brsw3{display:none}}
 /* secondary navigation: breadcrumbs */
 .trail{background:#fff;border-bottom:1px solid var(--border);color:#000}
-.trail-in{display:flex;flex-wrap:wrap;align-items:center;padding:6px 0;list-style:none;margin:0 auto;font-size:14px;line-height:20px}
+.trail-in{display:flex;flex-wrap:wrap;align-items:center;padding:8px 0;list-style:none;margin:0 auto;font-size:14px;line-height:20px}
 .trail-in li{display:flex;align-items:center;min-width:0}
 .trail a{color:var(--t2)}
 .trail a:hover,.trail a:focus-visible{color:#000;text-decoration:underline;text-underline-offset:3px}
@@ -877,22 +877,6 @@ body[data-sv] .menu--lg .group-row--solo{grid-template-columns:minmax(0,1fr)}
 .ft-base p{font-size:13px;line-height:18px;color:var(--t3)}
 @media(max-width:1000px){.ft-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:640px){.ft{padding:48px 0 24px}.ft-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ft-base{flex-direction:column;align-items:flex-start}}
-/* Solutions brand cards read as links: outlined instead of a flat gray fill, a clear black arrow, and on hover a darker outline, a tint, an underlined name and the arrow sliding right */
-body[data-sv] .menu .product__head{background:#fff;box-shadow:inset 0 0 0 1px var(--border);transition:box-shadow .25s var(--ease),background-color .25s var(--ease)}
-.menu .product__go{opacity:1;color:#000}
-.menu .product__go svg{width:14px;height:13px}
-body[data-sv] .menu .product__head:hover,body[data-sv] .menu .product__head:focus-visible{background:var(--surface-2);box-shadow:inset 0 0 0 1px #667085}
-.menu .product__head:hover .product__name,.menu .product__head:focus-visible .product__name{text-decoration:underline;text-underline-offset:3px}
-.menu .product__head:hover .product__go,.menu .product__head:focus-visible .product__go{opacity:1;transform:translateX(4px)}
-/* Solutions brand headings: a bordered card that links to the brand, like version 9 */
-.gm-pairs .gm-head--card{padding:14px 16px;margin:0 0 12px;border-radius:12px;background:#fff;color:#000;box-shadow:inset 0 0 0 1px var(--border);transition:box-shadow .25s var(--ease),background-color .25s var(--ease)}
-.gm-head--card .gm-brand{width:100%}
-.sol-cols .gm-head:not(.gm-head--card){padding:14px 16px 26px}
-.gm-cardgo{margin-left:auto;display:grid;place-items:center;transition:transform .5s var(--ease-out)}
-.gm-cardgo svg{width:14px;height:13px}
-.gm-head--card:hover,.gm-head--card:focus-visible{background:var(--surface-2);box-shadow:inset 0 0 0 1px #667085}
-.gm-head--card:hover .gm-brand>span:nth-child(2),.gm-head--card:focus-visible .gm-brand>span:nth-child(2){text-decoration:underline;text-underline-offset:3px}
-.gm-head--card:hover .gm-cardgo,.gm-head--card:focus-visible .gm-cardgo{transform:translateX(4px)}
 </style>
 </head>
 <body>
@@ -1365,7 +1349,7 @@ function solutionsInner(m){
   var gs = groupsOf(m), prods = gs.filter(function(g){ return g.head; }), caps = gs.filter(function(g){ return !g.head; }), f = m.footer, d = 0;
   /* a brand's heading is a card that links to the brand (like version 9), and its column still opens with an Explore link */
   var head = function(name,tag,k,p){
-    if(k) return '<a class="gm-head gm-head--card" href="'+href(p)+'"><div class="gm-brand"><span class="gm-mk">'+BRAND[k].mark+'</span><span>'+esc(name)+'</span><span class="gm-cardgo" aria-hidden="true">'+ARR+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</a>';
+    if(k) return '<a class="product__head" href="'+href(p)+'">'+brandTile(k)+'<span class="product__text"><span class="product__name">'+esc(name)+'</span><span class="product__tag">'+esc(tag)+'</span></span><span class="product__go" aria-hidden="true">'+ARR+'</span></a>';
     return '<div class="gm-head"><div class="gm-brand"><span>'+esc(name)+'</span></div>'+(tag?'<p class="gm-tag">'+esc(tag)+'</p>':'')+'</div>';
   };
   var cols = prods.map(function(g){
@@ -1534,8 +1518,6 @@ function soloBarHTML(brand){
   var b = BRAND[brand];
   return '<div class="sub-bar sub-bar--solo"><nav class="bar bar--sub bar--solo" aria-label="'+esc(b.name)+'">'
     +'<div class="sub-bar__id">'+COMMERCE_LOGO+'</div>'
-    +'<span class="sub-bar__div" aria-hidden="true"></span>'
-    +'<a class="sub-bar__label sub-bar__label--logo" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview" title="'+esc(b.name)+'">'+b.mark+'</a>'
     +'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+moreSlot('sub')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div>'+mToggle('sub')+'</nav></div>';
 }
 function headerHTML(brand){
