@@ -830,6 +830,8 @@ body[data-sv] .menu .product__head:hover,body[data-sv] .menu .product__head:focu
 .menu .product__head:hover .product__name,.menu .product__head:focus-visible .product__name{text-decoration:underline;text-underline-offset:3px}
 .menu .product__head:hover .product__go,.menu .product__head:focus-visible .product__go{opacity:1;transform:translateX(4px)}
 /* ===== Variant 12: the brand columns in Solutions are gray cards, like the Developers column in Product Features. By role stays white. ===== */
+:root{--bar-h:62px;--sub-h:49px}
+.stack .commerce-bar .bar-cta .btn{padding:8px 12px;font-size:var(--type-s);line-height:var(--lh-s)}
 .menu--lg .menu__main{padding:8px}
 .sol-cols{gap:8px;padding:0}
 .sol-cols .gm-colx,.sol-cols .gm-colx:first-child,.sol-cols .gm-colx:last-child{border-right:0}
@@ -1631,7 +1633,7 @@ window.addEventListener('scroll',function(){
     var st = document.querySelector('.stack.has-sub'); if(!st) return;
     var y = Math.max(0, window.pageYOffset||0); lastY = y;
     st.classList.remove('up');
-    st.classList.toggle('sub-only', y>72 && !st.classList.contains('up'));
+    st.classList.toggle('sub-only', y>62 && !st.classList.contains('up'));
   });
 },{passive:true});
 function closeMenu(){ setMenu(null); }
