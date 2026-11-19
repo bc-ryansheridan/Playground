@@ -11,6 +11,7 @@ import SubBrandNavigation9 from './components/SubBrandNavigation9/SubBrandNaviga
 import SubBrandNavigation10 from './components/SubBrandNavigation10/SubBrandNavigation10'
 import SubBrandNavigation11 from './components/SubBrandNavigation11/SubBrandNavigation11'
 import SubBrandNavigation12 from './components/SubBrandNavigation12/SubBrandNavigation12'
+import SubBrandNavigation13 from './components/SubBrandNavigation13/SubBrandNavigation13'
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
       <Route path="prototypes/consolidated-navigation-11/*" element={<Navigate to="/prototypes/consolidated-navigation-11" replace />} />
       <Route path="prototypes/consolidated-navigation-12" element={<SubBrandNavigation12 />} />
       <Route path="prototypes/consolidated-navigation-12/*" element={<Navigate to="/prototypes/consolidated-navigation-12" replace />} />
+      <Route path="prototypes/consolidated-navigation-13" element={<SubBrandNavigation13 />} />
+      <Route path="prototypes/consolidated-navigation-13/*" element={<Navigate to="/prototypes/consolidated-navigation-13" replace />} />
       <Route
         path="prototypes/consolidated-navigation-1"
         element={<ConsolidatedNavigation version={1} />}
