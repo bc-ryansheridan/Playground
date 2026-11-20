@@ -839,9 +839,10 @@ body[data-sv] .menu .product__head:hover,body[data-sv] .menu .product__head:focu
 .gm-pairs .gm-link:hover .gm-lt::after,.gm-pairs .gm-link:focus-visible .gm-lt::after{opacity:.45;filter:blur(0);transform:none}
 .gm-pairs .gm-link:has(.tag) .gm-lt::after{display:none}
 .gm-pairs .gm-colx:has(.gm-link:is(:hover,:focus-visible)) .gm-link:not(:is(:hover,:focus-visible)){opacity:var(--focus-dim);transition:opacity .15s var(--ease) 0s}
-/* Contact sales in the Get started strip: medium weight on hover, with the arrow still sliding */
+/* Contact sales in the Get started strip and the footer strips (Visit our AI Labs): medium weight on hover, with the arrow still sliding */
 .gm-go>span{transition:font-weight .3s var(--ease)}
-.gm-strip:hover .gm-go>span,.gm-strip:focus-visible .gm-go>span{font-weight:var(--w-medium)}
+.gm-strip:hover .gm-go>span,.gm-strip:focus-visible .gm-go>span,.strip:hover .gm-go>span,.strip:focus-within .gm-go>span{font-weight:var(--w-medium)}
+.strip:hover .gm-go svg{transform:translateX(4px)}
 /* the brand switcher too */
 .brsw2__a:hover,.brsw2__a:focus-visible{background:transparent}
 .brsw2__a>span:nth-child(2){display:inline-block;transition:transform .6s var(--ease-out),font-weight .3s var(--ease)}
