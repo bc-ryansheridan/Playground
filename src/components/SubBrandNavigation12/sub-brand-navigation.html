@@ -839,6 +839,26 @@ body[data-sv] .menu .product__head:hover,body[data-sv] .menu .product__head:focu
 .sol-cols .gm-colx--card .gm-head{padding:0 12px 12px}
 .sol-cols .gm-colx--card .gm-link:hover,.sol-cols .gm-colx--card .gm-link:focus-visible{background:#e4e7ec}
 .sol-cols .gm-colx:not(.gm-colx--card){padding:24px 12px 16px}
+/* Solutions and Get started links use the same hover as the other dropdowns: no pill; the label goes medium, slides 4px and shows an arrow, and the other links in the column fade */
+.gm-pairs .gm-link{transition:opacity var(--focus-return-time) var(--ease-soft) var(--focus-return-delay)}
+.gm-pairs .gm-link:hover,.gm-pairs .gm-link:focus-visible,.sol-cols .gm-colx--card .gm-link:hover,.sol-cols .gm-colx--card .gm-link:focus-visible{background:transparent;transition:opacity var(--focus-active-time) var(--ease) 0s}
+.gm-pairs .gm-link{font-weight:var(--w-regular)}
+.gm-pairs .gm-lt{font-weight:inherit;display:inline-block;transition:transform .6s var(--ease-out),font-weight .3s var(--ease)}
+.gm-pairs .gm-lt::after{content:"\2192";display:inline-block;margin-left:.45em;opacity:0;filter:blur(2px);transform:translateX(-30%);transition:opacity .4s var(--ease-soft),filter .4s var(--ease-soft),transform .6s var(--ease-out)}
+.gm-pairs .gm-link:hover .gm-lt,.gm-pairs .gm-link:focus-visible .gm-lt{font-weight:var(--w-medium);transform:translateX(4px)}
+.gm-pairs .gm-link:hover .gm-lt::after,.gm-pairs .gm-link:focus-visible .gm-lt::after{opacity:.45;filter:blur(0);transform:none}
+.gm-pairs .gm-link:has(.tag) .gm-lt::after{display:none}
+.gm-pairs .gm-colx:has(.gm-link:is(:hover,:focus-visible)) .gm-link:not(:is(:hover,:focus-visible)){opacity:var(--focus-dim);transition:opacity .15s var(--ease) 0s}
+/* Contact sales in the Get started strip: medium weight on hover, with the arrow still sliding */
+.gm-go>span{transition:font-weight .3s var(--ease)}
+.gm-strip:hover .gm-go>span,.gm-strip:focus-visible .gm-go>span{font-weight:var(--w-medium)}
+/* the brand switcher too */
+.brsw2__a:hover,.brsw2__a:focus-visible{background:transparent}
+.brsw2__a>span:nth-child(2){display:inline-block;transition:transform .6s var(--ease-out),font-weight .3s var(--ease)}
+.brsw2__a>span:nth-child(2)::after{content:"\2192";display:inline-block;margin-left:.45em;opacity:0;filter:blur(2px);transform:translateX(-30%);transition:opacity .4s var(--ease-soft),filter .4s var(--ease-soft),transform .6s var(--ease-out)}
+.brsw2__a:hover>span:nth-child(2),.brsw2__a:focus-visible>span:nth-child(2){font-weight:var(--w-medium);transform:translateX(4px)}
+.brsw2__a:hover>span:nth-child(2)::after,.brsw2__a:focus-visible>span:nth-child(2)::after{opacity:.45;filter:blur(0);transform:none}
+.brsw2__a.is-current>span:nth-child(2)::after{display:none}
 </style>
 </head>
 <body>
